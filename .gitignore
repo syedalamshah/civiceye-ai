@@ -218,3 +218,28 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# RoadLens: local credentials, model artifacts, and frontend output
+.env.*
+!.env.example
+*.onnx
+*.pt
+*.pth
+node_modules/
+backend/.cache/
+frontend/node_modules/
+frontend/dist/
+.aws/
+.ssh/
+.npmrc
+credentials.json
+service-account*.json
+*.pem
+*.key
+*.p12
+*.pfx
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
