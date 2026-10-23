@@ -30,6 +30,8 @@ async def lifespan(app):
         app.state.detector = await run_in_threadpool(Detector, path)
     except Exception:
         logger.exception('Pothole model unavailable; /api/detect will return 503')
+        if os.getenv('REQUIRE_MODEL', '').lower() in ('1', 'true', 'yes'):
+            raise
     yield
     app.state.detector = None
 

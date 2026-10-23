@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: roadlens-api
+    runtime: python
+    plan: free
+    branch: main
+    buildCommand: >-
+      pip install -r backend/requirements.txt &&
+      python backend/download_model.py &&
+      python -c "from backend.detector import Detector; from PIL import Image; import os; Detector(os.environ['MODEL_PATH']).detect(Image.new('RGB', (640, 640))); print('Verified ONNX inference check passed')"
+    startCommand: python -m uvicorn backend.main:app --host 0.0.0.0 --port $PORT --workers 1
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      - key: MODEL_PATH
+        value: backend/.cache/pothole.onnx
+      - key: REQUIRE_MODEL
+        value: "true"
+      - key: CORS_ORIGINS
+        value: http://localhost:5173,http://127.0.0.1:5173
+      - key: MAX_UPLOAD_BYTES
+        value: "10485760"
